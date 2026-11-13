@@ -6,6 +6,7 @@ backups/
 
 # 系统/编辑器临时文件
 .screenshots/
+.trae/mcp.json
 *.tmp
 ~$*
 Thumbs.db
