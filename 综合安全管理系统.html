@@ -1733,7 +1733,7 @@ body { font-family: "Microsoft YaHei", "PingFang SC", sans-serif; background: va
 /* ---- 小屏平板 / 横屏手机：导航收纳、页头自适应、弹窗不溢出 ---- */
 @media (max-width: 820px) {
   html { -webkit-text-size-adjust: 100%; }
-  .topbar { height: 54px; padding: 0 10px; gap: 8px; background: var(--sidebar-bg); box-shadow: none; position: relative; z-index: 270; }
+  .topbar { height: 54px; padding: 0 10px; gap: 8px; background: var(--sidebar-bg) !important; background-image: none !important; box-shadow: none !important; border-bottom: 1px solid rgba(255,255,255,.08); position: relative; z-index: 270; }
   .tb-logo { width: 28px; height: 28px; }
   .tb-brand-text .tb-title { font-size: 13.5px; }
   .tb-brand-text .tb-sub { display: none; }
