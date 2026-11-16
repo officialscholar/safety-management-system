@@ -6,7 +6,7 @@
  *   - 同源静态资源（图标/manifest）：缓存优先，后台静默更新
  *   - 跨域请求（OCR 联网增强等）：完全放行，不做拦截
  */
-const VERSION = 'v1';
+const VERSION = 'v2';
 const CACHE = 'aqgl-' + VERSION;
 const APP_HTML = './综合安全管理系统.html';
 
