@@ -1725,6 +1725,8 @@ body { font-family: "Microsoft YaHei", "PingFang SC", sans-serif; background: va
 .hm-wrap { display: none; }
 /* 移动端「设置」菜单：桌面端不显示（由 文件库 / 主题 两个独立按钮承载） */
 .tb-mtools { display: none; }
+/* 移动端「更多」抽屉里的底部导航自定义：桌面端不显示 */
+.tb-chooser { display: none; }
 .tb-nav-mask { display: none; pointer-events: none; }
 .tbl-scroll { width: 100%; max-width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
 
@@ -1786,6 +1788,17 @@ body { font-family: "Microsoft YaHei", "PingFang SC", sans-serif; background: va
   .tb-nav-mask { position: fixed; left: 0; right: 0; top: 54px; bottom: 0; z-index: 250; background: rgba(15,23,42,.34); pointer-events: none; }
   .tb-nav-mask.open { display: block; pointer-events: auto; }
 
+  /* 「更多」抽屉：底部导航栏自定义（主功能） */
+  .tb-chooser { display: block; padding: 12px 4px 12px; border-bottom: 1px solid var(--line); margin-bottom: 4px; }
+  .tb-chooser-hd { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; padding: 0 8px 10px; font-size: 13px; font-weight: 700; color: var(--ink); letter-spacing: .5px; }
+  .tb-chooser-hd span { font-size: 10.5px; font-weight: 500; color: var(--ink-3); letter-spacing: 0; }
+  .tb-chooser-list { display: flex; flex-wrap: wrap; gap: 8px; padding: 0 4px; }
+  .tb-chooser-item { display: inline-flex; align-items: center; gap: 7px; padding: 9px 13px; border: 1px solid var(--line); border-radius: 999px; background: var(--card); color: var(--ink-2); font-size: 13px; font-family: inherit; cursor: pointer; }
+  .tb-chooser-item:active { background: var(--tint); }
+  .tb-chooser-item.on { background: var(--tint); border-color: var(--primary); color: var(--primary); font-weight: 600; }
+  .tb-chooser-check { width: 15px; height: 15px; flex: none; border: 1.5px solid var(--line); border-radius: 4px; display: inline-flex; align-items: center; justify-content: center; font-size: 10.5px; line-height: 1; color: transparent; }
+  .tb-chooser-item.on .tb-chooser-check { background: var(--primary); border-color: var(--primary); color: #fff; }
+
   /* 页头操作条：横向可滑，不换行占高 */
   .main-header { height: auto; min-height: 46px; padding: 6px 10px; gap: 8px; }
   .main-header .title { font-size: 13.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -1812,7 +1825,7 @@ body { font-family: "Microsoft YaHei", "PingFang SC", sans-serif; background: va
   #pageHome.mb-on { display: flex !important; flex-direction: column; }
   #pageHome .home-welcome { order: 0; }
   #pageHome #homeMobile { order: 1; }
-  #pageHome .mig-panel { order: 2; margin-top: 12px; }
+  #pageHome .mig-panel { display: none; } /* 移动端首页不展示「全系统备份」卡片（已收进顶栏设置菜单） */
   #homeGrid { display: none; }
   .hm-wrap { display: block; }
   .hm-quick { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 12px; }
@@ -1831,14 +1844,12 @@ body { font-family: "Microsoft YaHei", "PingFang SC", sans-serif; background: va
   .hm-c:active { background: var(--tint); }
   .hm-c-t { font-size: 13px; font-weight: 600; color: var(--ink); }
   .hm-c-s { font-size: 10.5px; color: var(--ink-3); margin-top: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .mig-panel { order: 2; padding: 12px 14px 12px 18px; }
-  .mig-sub { display: none; }
-  .mig-panel .mig-main { flex: 1 1 100%; }
-  /* 备份操作已收进顶部「设置」菜单，首页只保留统计与进度 */
-  .mig-panel .mig-actions { display: none; }
-  .mig-title::after { content: '顶部「设置」中操作'; font-size: 10.5px; font-weight: 500; color: var(--ink-3); }
-  .mig-stats { margin-top: 5px; }
   .home-welcome { margin-bottom: 4px; }
+
+  /* 移动端：页面顶部横幅 / 标题头一律纯色，去掉标题栏上方的渐变背景（桌面端观感不变） */
+  .pln-hero { background: var(--card); }              /* 专项方案 / 违约处罚 / 安全规范 顶部横幅 */
+  .ss-nb-head { background: var(--primary); }         /* 安全规范笔记编辑头 */
+  .guide-drawer-head { background: var(--primary); }  /* 填写说明抽屉头 */
 
   /* 基础数据：标签页横向滑动 */
   .bd-toolbar { flex-wrap: wrap; }
@@ -2015,7 +2026,12 @@ body { font-family: "Microsoft YaHei", "PingFang SC", sans-serif; background: va
       </div>
     </div>
     <nav class="tb-nav" id="tbNav">
-      <div class="tb-nav-head"><b>全部功能</b><button type="button" class="tb-nav-close" onclick="closeMobileNav()" aria-label="关闭菜单">×</button></div>
+      <div class="tb-nav-head"><b>更多</b><button type="button" class="tb-nav-close" onclick="closeMobileNav()" aria-label="关闭菜单">×</button></div>
+      <!-- 移动端专属：底部导航栏自定义（点选要显示的条目，最多4项） -->
+      <div class="tb-chooser">
+        <div class="tb-chooser-hd">底部导航栏 <span>点选显示条目 · 最多4项 · 更多固定</span></div>
+        <div class="tb-chooser-list" id="mbChooserList"></div>
+      </div>
       <button class="tb-nav-item" id="navHome" onclick="openHomePage()">首页</button>
       <span class="tb-nav-grp">日常管理</span>
       <button class="tb-nav-item" id="navBase" onclick="openBaseDataPage()">基础数据</button>
@@ -2895,29 +2911,8 @@ body { font-family: "Microsoft YaHei", "PingFang SC", sans-serif; background: va
     <button onclick="document.getElementById('pwaUpdateBar').style.display='none'" style="background:transparent;color:rgba(255,255,255,.7);border:none;font-size:16px;cursor:pointer;padding:0 4px;line-height:1;">×</button>
   </div>
 
-  <!-- ===== 移动端底部主导航 ===== -->
-  <nav class="mb-nav" id="mbNav" aria-label="底部导航">
-    <button type="button" class="mb-nav-item" data-page="home" onclick="mbNavGo('home')">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.2 12 3l9 7.2V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>
-      <span>首页</span>
-    </button>
-    <button type="button" class="mb-nav-item" data-page="log" onclick="mbNavGo('log')">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h9l4 4v14H6z"/><path d="M15 3v4h4"/><path d="M9 12h7M9 16h7"/></svg>
-      <span>日志</span>
-    </button>
-    <button type="button" class="mb-nav-item" data-page="hazard" onclick="mbNavGo('hazard')">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h10"/><circle cx="19" cy="18" r="2"/></svg>
-      <span>隐患</span>
-    </button>
-    <button type="button" class="mb-nav-item" data-page="worker" onclick="mbNavGo('worker')">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="11" r="2"/><path d="M6.5 16c.6-1.4 1.4-2 2.5-2s1.9.6 2.5 2"/><path d="M14 10h4M14 13h4M14 16h2"/></svg>
-      <span>特种作业</span>
-    </button>
-    <button type="button" class="mb-nav-item" data-page="more" onclick="mbNavGo('more')">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/></svg>
-      <span>更多</span>
-    </button>
-  </nav>
+  <!-- ===== 移动端底部主导航（条目可自定义，由 renderMbNav() 动态生成） ===== -->
+  <nav class="mb-nav" id="mbNav" aria-label="底部导航"></nav>
 
   <!-- ===== 项目信息 弹窗 ===== -->
 <div class="modal-overlay" id="projectSettingsModal">
@@ -4584,8 +4579,6 @@ function closeMobileTools() {
 function mtoolsAction(type) {
   closeMobileTools();
   if (type === 'flib') { openFlibModal(); return; }
-  // 备份在首页有进度条，操作前先回到首页，便于查看进度
-  if (currentView !== 'home') openHomePage();
   if (type === 'export') migExport();
   else if (type === 'import') migPickImport();
   else if (type === 'clear') migClearAll();
@@ -4602,21 +4595,94 @@ function resetContentScrollTop() {
   const c = document.querySelector('.content');
   if (c) c.scrollTop = 0;
 }
-// 底部主导航跳转：常用页直达，「更多」展开完整分组菜单
+// ===== 移动端底部导航：条目可自定义（选择结果存 localStorage） =====
+const MB_NAV_MAX = 4;
+const MB_NAV_ICONS = {
+  home: '<path d="M3 10.2 12 3l9 7.2V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/>',
+  log: '<path d="M6 3h9l4 4v14H6z"/><path d="M15 3v4h4"/><path d="M9 12h7M9 16h7"/>',
+  base: '<ellipse cx="12" cy="5.5" rx="7.5" ry="3"/><path d="M4.5 5.5v6c0 1.7 3.4 3 7.5 3s7.5-1.3 7.5-3v-6"/><path d="M4.5 11.5v6c0 1.7 3.4 3 7.5 3s7.5-1.3 7.5-3v-6"/>',
+  govern: '<path d="M14.7 6.3a4.5 4.5 0 0 0-6 6L4 17v3h3l4.7-4.7a4.5 4.5 0 0 0 6-6L15 12l-3-3z"/>',
+  hazard: '<path d="M4 6h16M4 12h16M4 18h10"/><circle cx="19" cy="18" r="2"/>',
+  worker: '<rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="11" r="2"/><path d="M6.5 16c.6-1.4 1.4-2 2.5-2s1.9.6 2.5 2"/><path d="M14 10h4M14 13h4M14 16h2"/>',
+  risk: '<circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3"/>',
+  danger: '<path d="M12 3 2.5 19.5h19z"/><path d="M12 9.5v4M12 16.2v.6"/>',
+  plans: '<path d="M6 3h9l4 4v14H6z"/><path d="M15 3v4h4"/><path d="M9 13h6M9 16h6"/>',
+  penalty: '<rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/>'
+};
+const MB_NAV_CATALOG = [
+  { key: 'home', label: '首页', go: 'openHomePage' },
+  { key: 'log', label: '日志', go: 'openLogsPage' },
+  { key: 'base', label: '基础数据', go: 'openBaseDataPage' },
+  { key: 'govern', label: '隐患治理', go: 'openGovernPage' },
+  { key: 'hazard', label: '隐患台账', go: 'openHazardPage' },
+  { key: 'worker', label: '特种作业', go: 'openWorkerPage' },
+  { key: 'risk', label: '风险识别', go: 'openRiskPage' },
+  { key: 'danger', label: '危大工程', go: 'openDangerPage' },
+  { key: 'plans', label: '专项方案', go: 'openPlansPage' },
+  { key: 'penalty', label: '违约处罚', go: 'openPenaltyPage' }
+];
+function mbNavSelection() {
+  try {
+    const arr = JSON.parse(localStorage.getItem('wuye_mb_nav') || '');
+    if (Array.isArray(arr)) {
+      const valid = arr.filter(k => MB_NAV_CATALOG.some(c => c.key === k));
+      if (valid.length) return valid.slice(0, MB_NAV_MAX);
+    }
+  } catch (e) {}
+  return ['home', 'log', 'base', 'govern']; // 默认：首页 / 日志 / 基础数据 / 隐患治理
+}
+function renderMbNav() {
+  const nav = document.getElementById('mbNav');
+  if (!nav) return;
+  const svg = p => '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + p + '</svg>';
+  let html = mbNavSelection().map(k => {
+    const c = MB_NAV_CATALOG.find(x => x.key === k);
+    if (!c) return '';
+    return '<button type="button" class="mb-nav-item" data-page="' + c.key + '" onclick="mbNavGo(\'' + c.key + '\')">' +
+      svg(MB_NAV_ICONS[c.key] || '') + '<span>' + c.label + '</span></button>';
+  }).join('');
+  html += '<button type="button" class="mb-nav-item" data-page="more" onclick="mbNavGo(\'more\')">' +
+    svg('<circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/>') + '<span>更多</span></button>';
+  nav.innerHTML = html;
+  // 同步当前页高亮（当前页未固定在底部时高亮「更多」）
+  const sel = mbNavSelection();
+  const active = sel.includes(currentView) ? currentView : 'more';
+  nav.querySelectorAll('.mb-nav-item').forEach(b => b.classList.toggle('active', b.getAttribute('data-page') === active));
+}
+// 「更多」抽屉中的底部导航选择器
+function renderMbChooser() {
+  const box = document.getElementById('mbChooserList');
+  if (!box) return;
+  const sel = mbNavSelection();
+  box.innerHTML = MB_NAV_CATALOG.map(c => {
+    const on = sel.includes(c.key);
+    return '<button type="button" class="tb-chooser-item' + (on ? ' on' : '') + '" data-key="' + c.key + '" onclick="mbNavToggle(\'' + c.key + '\', event)" aria-pressed="' + on + '">' +
+      '<span class="tb-chooser-check">✓</span>' + c.label + '</button>';
+  }).join('');
+}
+function mbNavToggle(key, e) {
+  if (e) e.stopPropagation(); // 阻止冒泡：重渲染会替换被点节点，文档级"点空白关闭"会误判导致抽屉关闭
+  let sel = mbNavSelection();
+  if (sel.includes(key)) {
+    if (sel.length <= 1) { showToast('至少保留 1 个导航条目', 'error'); return; }
+    sel = sel.filter(k => k !== key);
+  } else {
+    if (sel.length >= MB_NAV_MAX) { showToast('底部导航最多显示 ' + MB_NAV_MAX + ' 项（「更多」始终保留）', 'error'); return; }
+    sel = sel.concat(key);
+  }
+  try { localStorage.setItem('wuye_mb_nav', JSON.stringify(sel)); } catch (e) {}
+  renderMbChooser();
+  renderMbNav();
+}
+// 底部主导航跳转：条目按用户选择动态生成，「更多」展开自定义 + 完整菜单
 function mbNavGo(key) {
   if (key === 'more') { toggleMobileNav(); return; }
   closeMobileNav();
   closeMobileTools();
   // 已在当前页时只回到顶部，避免重复渲染造成闪跳
-  const same = { home: 'home', log: 'log', hazard: 'hazard', worker: 'worker' };
-  if (currentView === same[key]) {
-    resetContentScrollTop();
-    return;
-  }
-  if (key === 'home') openHomePage();
-  else if (key === 'log') openLogsPage();
-  else if (key === 'hazard') openHazardPage();
-  else if (key === 'worker') openWorkerPage();
+  if (currentView === key) { resetContentScrollTop(); return; }
+  const c = MB_NAV_CATALOG.find(x => x.key === key);
+  if (c && typeof window[c.go] === 'function') window[c.go]();
 }
 document.addEventListener('click', function (e) {
   const nav = document.getElementById('tbNav');
@@ -4662,6 +4728,9 @@ function init() {
     baseData.officers.push({ id: genId(), name: '', buildingIds: [] });
     saveBaseData();
   }
+  // 渲染移动端底部导航与「更多」中的导航自定义选择器
+  renderMbNav();
+  renderMbChooser();
   // 默认进入系统门户首页
   openHomePage();
   // 移动端：为宽表格加上横向滚动容器
@@ -4847,11 +4916,11 @@ function switchPage(name) {
     const el = document.getElementById(NAV_IDS[k]);
     if (el) el.classList.toggle('active', k === name);
   });
-  // 移动端：首页使用分组门户布局，底部导航同步高亮
+  // 移动端：首页使用分组门户布局，底部导航同步高亮（条目可自定义）
   const hp = document.getElementById('pageHome');
   if (hp) hp.classList.toggle('mb-on', name === 'home');
-  const MB_TABS = { home: 'home', log: 'log', hazard: 'hazard', worker: 'worker' };
-  const mbActive = MB_TABS[name] || 'more';
+  const sel = typeof mbNavSelection === 'function' ? mbNavSelection() : [];
+  const mbActive = sel.includes(name) ? name : 'more';
   document.querySelectorAll('.mb-nav-item').forEach(b => {
     b.classList.toggle('active', b.getAttribute('data-page') === mbActive);
   });
